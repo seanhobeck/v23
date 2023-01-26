@@ -1,4 +1,4 @@
-# GNU_CXX2A
+# gcx2a
 [![language c++](https://img.shields.io/badge/language-c++-purple?style=flat-square)](https://en.wikipedia.org/wiki/C++) [![license GPLv3](https://img.shields.io/badge/license-GPLv3-orange?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html) ![testing incomplete](https://img.shields.io/badge/test-incomplete-red?style=flat-square)
  
  A library for c++2a standard on gnu/linux.
