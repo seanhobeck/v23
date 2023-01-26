@@ -66,19 +66,11 @@ namespace __gnu::cxx2a {
     static const std::optional<std::string> 
     voformat(const std::string& __format, pargs_t... __args) noexcept
     {
-        /// Checking the length of the string.
-        if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0)
-        {
-            /// Initialize a temporary buffer.
-            std::unique_ptr<char[]> buf(new char[sz]);
+        /// Call vformat() and check if its 0.
+        auto s = vformat(__format, __args);
 
-            /// Use std::snprintf to format and return the optional string.
-            std::snprintf(buf.get(), sz, __format.c_str(), __args...);
-            return std::make_optional(std::string(buf.get(), buf.get() + sz - 1));
-        }
-
-        ///  Return std::nullopt.
-        return std::nullopt;
+        /// If it is not 0 then we make a optional out of it and return it, otherwise we return std::nullopt.
+        return s.length() == 0 ? std::make_optional(s) : std::nullopt;
     };
     /// @brief Formats a string to a buffer.
     /// @param __buf The buffer to be formatted to.
@@ -86,20 +78,8 @@ namespace __gnu::cxx2a {
     static void 
     vsformat(std::shared_ptr<std::string> __buf, const std::string& __format, pargs_t... __args) noexcept
     {
-        /// Checking the length of the string.
-        if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0)
-        {
-            /// Initialize a temporary buffer.
-            std::unique_ptr<char[]> buf(new char[sz]);
-
-            /// Use std::snprintf() and set the buffer to the string.
-            std::snprintf(buf.get(), sz, __format.c_str(), __args...);
-            __buf = std::string(buf.get(), buf.get() + sz - 1);
-            return;
-        }
-
-        /// Set the buffer to a empty string.
-        __buf = std::string();
+        /// Wrapping the function, no need to overcomplicate things.
+        __buf = vformat(__format, __args);
     };
     /// @brief Formats a string to a buffer.
     /// @param __n
@@ -108,19 +88,7 @@ namespace __gnu::cxx2a {
     static void 
     vsnformat(std::shared_ptr<std::string> __buf, const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
     {
-        /// Checking the length of the string.
-        if(auto sz = (std::size_t) n; __format.size() > 0 && sz != 0)
-        {
-            /// Initialize a temporary buffer.
-            std::unique_ptr<char[]> buf(new char[n]);
-
-            /// Use std::snprintf() and set the buffer to the string.
-            std::snprintf(buf.get(), n, format.c_str(), __args...);
-            __buf = std::string(buf.get(), buf.get() + n - 1);
-            return;
-        }
-
-        /// Set the buffer to a empty string.
-        __buf = std::string();
+        /// Wrapping the function, no need to overcomplicate things.
+        __buf = vnformat(__format, __n, __args);
     };
 };
