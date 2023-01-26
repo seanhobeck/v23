@@ -9,3 +9,6 @@
  So I thought about making my own namespace with some of the things I needed and called it a day.
 
  *Reminder, this shouldn't be used as a dependency it is highly unstable and I have not tested it yet.*
+
+## TODO
+ I'm hoping on making things like ```flat_map```, ```flat_set```, and a lot of the ```ranges::``` functions available to c++2a & 23 developers.
