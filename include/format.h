@@ -2,9 +2,12 @@
  * 
  * 
  *      @author  Sean Hobeck
+ *       @date 2023-01-26
  * 
  * 
  **/
+#pragma once
+
 /// @uses: std::snprintf(), std::string
 #include <string>
 
@@ -28,14 +31,14 @@ namespace __gnu::cxx2a {
     vnformat(const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
     {
         /// Checking the length of the string.
-        if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0 && n != 0)
+        if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0 && __n != 0)
         {
             /// Initialize a temporary buffer.
-            std::unique_ptr<char[]> buf(new char[n]);
+            std::unique_ptr<char[]> buf(new char[__n]);
 
             /// Use std::snprintf() and return the string.
-            std::snprintf(buf.get(), n, __format.c_str(), __args...);
-            return std::string(buf.get(), buf.get() + n - 1);
+            std::snprintf(buf.get(), __n, __format.c_str(), __args...);
+            return std::string(buf.get(), buf.get() + __n - 1);
         }
 
         ///  Return a empty string.
@@ -48,10 +51,21 @@ namespace __gnu::cxx2a {
     /// @return Returns a formatted string if the length isn't 0, otherwise it returns a empty string.
     template<typename ... pargs_t>
     static const std::string 
-    vformat(const std::string& __format, pargs_t... __args) noexcept
+    vformat(const std::string __format, pargs_t... __args) noexcept
     {
-        /// Wrapping function for optimization.
-        return vnformat(__format, (std::size) __format.size(), __args);
+        /// Checking the length of the string.
+        if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0)
+        {
+            /// Initialize a temporary buffer.
+            std::unique_ptr<char[]> buf(new char[sz]);
+
+            /// Use std::snprintf() and return the string.
+            std::snprintf(buf.get(), sz, __format.c_str(), __args...);
+            return std::string(buf.get(), buf.get() + sz - 1);
+        }
+
+        ///  Return a empty string.
+        return std::string();
     };
     /// @brief Formats a string (with std::optional).
     /// @return Returns a std::optional of the formatted string.
@@ -60,7 +74,7 @@ namespace __gnu::cxx2a {
     voformat(const std::string& __format, pargs_t... __args) noexcept
     {
         /// Call vformat() and check if its 0.
-        auto s = vformat(__format, __args);
+        auto s = vformat(__format, __args...);
 
         /// If it is not 0 then we make a optional out of it and return it, otherwise we return std::nullopt.
         return s.length() == 0 ? std::make_optional(s) : std::nullopt;
@@ -72,7 +86,7 @@ namespace __gnu::cxx2a {
     vsformat(std::shared_ptr<std::string> __buf, const std::string& __format, pargs_t... __args) noexcept
     {
         /// Wrapping the function, no need to overcomplicate things.
-        __buf = vformat(__format, __args);
+        __buf = vformat(__format, __args...);
     };
     /// @brief Formats a string to a buffer.
     /// @param __n
@@ -82,6 +96,6 @@ namespace __gnu::cxx2a {
     vsnformat(std::shared_ptr<std::string> __buf, const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
     {
         /// Wrapping the function, no need to overcomplicate things.
-        __buf = vnformat(__format, __n, __args);
+        __buf = vnformat(__format, __n, __args...);
     };
 };
