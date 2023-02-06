@@ -28,6 +28,7 @@ namespace __gnu::cxx2a {
     /// @return Returns a formatted string if the length isn't 0, otherwise it returns a empty string.
     template<typename ... pargs_t>
     static const std::string 
+    _GLIBCXX_NODISCARD
     vnformat(const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
     {
         /// Checking the length of the string.
@@ -44,6 +45,7 @@ namespace __gnu::cxx2a {
         ///  Return a empty string.
         return std::string();
     };
+    
     /// @brief Formats a string.
     /// @tparam pargs_t A template for packed arguments (no va_args).
     /// @param __format The string that is going to be formatted.
@@ -51,6 +53,7 @@ namespace __gnu::cxx2a {
     /// @return Returns a formatted string if the length isn't 0, otherwise it returns a empty string.
     template<typename ... pargs_t>
     static const std::string 
+    _GLIBCXX_NODISCARD
     vformat(const std::string __format, pargs_t... __args) noexcept
     {
         /// Checking the length of the string.
@@ -67,10 +70,12 @@ namespace __gnu::cxx2a {
         ///  Return a empty string.
         return std::string();
     };
+
     /// @brief Formats a string (with std::optional).
     /// @return Returns a std::optional of the formatted string.
     template<typename ... pargs_t>
-    static const std::optional<std::string> 
+    static const std::optional<std::string>
+    _GLIBCXX_NODISCARD 
     voformat(const std::string& __format, pargs_t... __args) noexcept
     {
         /// Call vformat() and check if its 0.
@@ -79,6 +84,7 @@ namespace __gnu::cxx2a {
         /// If it is not 0 then we make a optional out of it and return it, otherwise we return std::nullopt.
         return s.length() == 0 ? std::make_optional(s) : std::nullopt;
     };
+
     /// @brief Formats a string to a buffer.
     /// @param __buf The buffer to be formatted to.
     template<typename ... pargs_t>
@@ -88,6 +94,7 @@ namespace __gnu::cxx2a {
         /// Wrapping the function, no need to overcomplicate things.
         __buf = vformat(__format, __args...);
     };
+
     /// @brief Formats a string to a buffer.
     /// @param __n
     /// @param __buf The buffer to be formatted to.
