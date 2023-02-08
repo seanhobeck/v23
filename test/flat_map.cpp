@@ -1,4 +1,4 @@
-#include "../flat_map.h"
+#include "flat_map.h"
 
 #include <iostream>
 #include <string>
