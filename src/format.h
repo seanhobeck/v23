@@ -27,7 +27,7 @@ namespace __gnu::cxx2a {
     /// @param ...__args Virtual packed arguments to format.
     /// @return Returns a formatted string if the length isn't 0, otherwise it returns a empty string.
     template<typename ... pargs_t>
-    static const std::string 
+    static std::string
     _GLIBCXX_NODISCARD
     vnformat(const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
     {
@@ -52,7 +52,7 @@ namespace __gnu::cxx2a {
     /// @param ...__args Virtual packed arguments to format.
     /// @return Returns a formatted string if the length isn't 0, otherwise it returns a empty string.
     template<typename ... pargs_t>
-    static const std::string 
+    static std::string
     _GLIBCXX_NODISCARD
     vformat(const std::string __format, pargs_t... __args) noexcept
     {
