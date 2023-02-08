@@ -40,7 +40,7 @@ int main()
         std::cout << "[-] Test 7 Failed" << std::endl;
 
     if (auto str = __gnu::cxx2a::vformat("%f", 0.0123); str == std::string("0.012300"))
-        std::cout << "[+] Test 8 Passing";
+        std::cout << "[+] Test 8 Passing" << std::endl;
     else 
-        std::cout << "[-] Test 8 Failed";
+        std::cout << "[-] Test 8 Failed" << std::endl;
 }
