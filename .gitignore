@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Flat Map Disclude
+/flat_map.h
+/test/flat_map.cpp
+/test/flat_map.log
