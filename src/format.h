@@ -17,9 +17,32 @@
 /// @uses: std::optional, std::nullopt
 #include <optional>
 
+/// @uses: std::runtime_error
+#include <stdexcept>
+
 
 /// @brief Namespace for the "gnu/linux c++2a standard".
 namespace __gnu::cxx2a {
+    /// @brief A format error.
+    class format_error : public std::runtime_error 
+    {
+    public:
+
+        /// @brief Explicit Constructor
+        /// @param what What the error is.
+        explicit format_error(const std::string& what) : std::runtime_error(what) { };
+
+        /// @brief Explicit Constructor
+        /// @param what What the error is.
+        explicit format_error(const char* what) : std::runtime_error(what) { };
+    };
+
+
+
+    ///--------------------------------------------- @section Unicode string formatting -------------------------------------------------------///
+
+
+
     /// @brief Formats a string (with a specified length).
     /// @tparam pargs_t A template for packed arguments (no va_args).
     /// @param __format The string that is going to be formatted.
@@ -29,7 +52,7 @@ namespace __gnu::cxx2a {
     template<typename ... pargs_t>
     static std::string
     _GLIBCXX_NODISCARD
-    vnformat(const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
+    vnformat(const std::string& __format, std::size_t __n, pargs_t... __args) 
     {
         /// Checking the length of the string.
         if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0 && __n != 0)
@@ -53,7 +76,7 @@ namespace __gnu::cxx2a {
     template<typename ... pargs_t>
     static std::string
     _GLIBCXX_NODISCARD
-    vformat(const std::string __format, pargs_t... __args) noexcept
+    vformat(const std::string __format, pargs_t... __args) 
     {
         /// Checking the length of the string.
         if(auto sz = (std::size_t) std::snprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0)
@@ -74,7 +97,7 @@ namespace __gnu::cxx2a {
     template<typename ... pargs_t>
     static const std::optional<std::string>
     _GLIBCXX_NODISCARD 
-    voformat(const std::string& __format, pargs_t... __args) noexcept
+    voformat(const std::string& __format, pargs_t... __args) 
     {
         /// Call vformat() and check if its 0.
         auto s = vformat(__format, __args...);
@@ -86,7 +109,7 @@ namespace __gnu::cxx2a {
     /// @param __buf The buffer to be formatted to.
     template<typename ... pargs_t>
     static void 
-    vsformat(std::shared_ptr<std::string> __buf, const std::string& __format, pargs_t... __args) noexcept
+    vsformat(std::shared_ptr<std::string> __buf, const std::string& __format, pargs_t... __args) 
     {
         /// Wrapping the function, no need to overcomplicate things.
         __buf = vformat(__format, __args...);
@@ -96,14 +119,16 @@ namespace __gnu::cxx2a {
     /// @param __buf The buffer to be formatted to.
     template<typename ... pargs_t>
     static void 
-    vsnformat(std::shared_ptr<std::string> __buf, const std::string& __format, std::size_t __n, pargs_t... __args) noexcept
+    vsnformat(std::shared_ptr<std::string> __buf, const std::string& __format, std::size_t __n, pargs_t... __args) 
     {
         /// Wrapping the function, no need to overcomplicate things.
         __buf = vnformat(__format, __n, __args...);
     };
 
 
-    ///------------------------------------- @section Wide-strings / Non-unicode strings ------------------------------------------///
+
+    ///------------------------------------- @section Wide-strings / Non-unicode strings formatting ------------------------------------------///
+
 
 
     /// @brief Formats a string (with a specified length).
@@ -115,7 +140,7 @@ namespace __gnu::cxx2a {
     template<typename ... pargs_t>
     static std::wstring
     _GLIBCXX_NODISCARD
-    wnformat(const std::wstring& __format, std::size_t __n, pargs_t... __args) noexcept
+    wnformat(const std::wstring& __format, std::size_t __n, pargs_t... __args) 
     {
         /// Checking the length of the string.
         if(auto sz = (std::size_t) std::swprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0 && __n != 0)
@@ -139,7 +164,7 @@ namespace __gnu::cxx2a {
     template<typename ... pargs_t>
     static std::wstring
     _GLIBCXX_NODISCARD
-    wformat(const std::wstring __format, pargs_t... __args) noexcept
+    wformat(const std::wstring __format, pargs_t... __args) 
     {
         /// Checking the length of the string.
         if(auto sz = (std::size_t) std::swprintf( nullptr, 0, __format.c_str(), __args...) + 1; sz > 0)
@@ -155,12 +180,12 @@ namespace __gnu::cxx2a {
         ///  Return a empty string.
         return std::wstring();
     };
-    /// @brief Formats a string (with std::optional).
+    /// @brief Formats a wstring (with std::optional).
     /// @return Returns a std::optional of the formatted string.
     template<typename ... pargs_t>
     static const std::optional<std::wstring>
     _GLIBCXX_NODISCARD 
-    woformat(const std::wstring& __format, pargs_t... __args) noexcept
+    woformat(const std::wstring& __format, pargs_t... __args) 
     {
         /// Call vformat() and check if its 0.
         auto s = vformat(__format, __args...);
@@ -168,24 +193,23 @@ namespace __gnu::cxx2a {
         /// If it is not 0 then we make a optional out of it and return it, otherwise we return std::nullopt.
         return s.length() == 0 ? std::make_optional(s) : std::nullopt;
     };
-    /// @brief Formats a string to a buffer.
+    /// @brief Formats a wstring to a wide string buffer.
     /// @param __buf The buffer to be formatted to.
     template<typename ... pargs_t>
     static void 
-    wsformat(std::shared_ptr<std::wstring> __buf, const std::wstring& __format, pargs_t... __args) noexcept
+    wsformat(std::shared_ptr<std::wstring> __buf, const std::wstring& __format, pargs_t... __args) 
     {
         /// Wrapping the function, no need to overcomplicate things.
         __buf = vformat(__format, __args...);
     };
-    /// @brief Formats a string to a buffer.
+    /// @brief Formats a wstring to a wide string buffer.
     /// @param __n
     /// @param __buf The buffer to be formatted to.
     template<typename ... pargs_t>
     static void 
-    wsnformat(std::shared_ptr<std::wstring> __buf, const std::wstring& __format, std::size_t __n, pargs_t... __args) noexcept
+    wsnformat(std::shared_ptr<std::wstring> __buf, const std::wstring& __format, std::size_t __n, pargs_t... __args) 
     {
         /// Wrapping the function, no need to overcomplicate things.
         __buf = vnformat(__format, __n, __args...);
     };
-
 };

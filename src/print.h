@@ -97,4 +97,25 @@ namespace __gnu::cxx2a {
     { 
         vprintln(stdout, __format, __args...);
     };
+        
+    
+    /// @brief Writes out to a file pointer, ending the line, with formatted args (non-unicode).
+    /// @tparam ...pargs_t Packed args (same as virtual arguments).
+    /// @param __fp 
+    /// @param __format The wide string to be formatted to.
+    /// @param __args Format parameters to format the wstring and print a line to the file pointer.
+    template<typename ... pargs_t>
+    static void 
+    vprintln(FILE* __fp, const std::wstring& __format, pargs_t... __args) noexcept 
+    { 
+        if (auto __frmt = __gnu::cxx2a::wformat(__format, __args...) + '\n'; __frmt.length() > 0)
+            fwrite(__frmt.c_str(), __frmt.length(), 1ul, __fp);
+    };
+    /// @brief Writes out to stdout with formatted args (non-unicode).
+    template<typename ... pargs_t>
+    static void 
+    vprintln(const std::wstring& __format, pargs_t... __args) noexcept 
+    { 
+        vprintln(stdout, __format, __args...);
+    };
 };
