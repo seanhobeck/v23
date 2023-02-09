@@ -108,7 +108,7 @@ namespace __gnu::cxx2a {
     static void 
     vprintln(FILE* __fp, const std::wstring& __format, pargs_t... __args) noexcept 
     { 
-        if (auto __frmt = __gnu::cxx2a::wformat(__format, __args...) + '\n'; __frmt.length() > 0)
+        if (auto __frmt = __gnu::cxx2a::wformat(__format, __args...) + L'\n'; __frmt.length() > 0)
             fwrite(__frmt.c_str(), __frmt.length(), 1ul, __fp);
     };
     /// @brief Writes out to stdout with formatted args (non-unicode).
