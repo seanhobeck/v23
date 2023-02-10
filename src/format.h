@@ -2,7 +2,7 @@
  * 
  * 
  *      @author  Sean Hobeck
- *       @date 2023-02-07
+ *       @date 2023-02-09
  * 
  * 
  **/
@@ -22,7 +22,7 @@
 
 
 /// @brief Namespace for the "gnu/linux c++2a standard".
-namespace __gnu::cxx2a {
+namespace __gnu_cxx::v2a {
     /// @brief A format error.
     class format_error : public std::runtime_error 
     {
