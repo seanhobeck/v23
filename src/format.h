@@ -21,8 +21,8 @@
 #include <stdexcept>
 
 
-/// @brief Namespace for the "gnu/linux c++2a standard".
-namespace __gnu_cxx::v2a {
+/// @brief Namespace for the "gnu/linux c++23 standard".
+namespace __gnu_cxx::v23 {
     /// @brief A format error.
     class format_error : public std::runtime_error 
     {

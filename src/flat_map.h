@@ -12,8 +12,8 @@
 #include <bits/stdc++.h>
 
 
-/// @brief Namespace for the "gnu/linux c++2a standard".
-namespace __gnu_cxx::v2a {
+/// @brief Namespace for the "gnu/linux c++23 standard".
+namespace __gnu_cxx::v23 {
 
     /// @brief Flat map container.
     /// @tparam k Key typename.
