@@ -2,10 +2,11 @@
  * 
  * 
  *      @author  Sean Hobeck
- *       @date 2023-02-09
+ *       @date 2023-02-14
  * 
  * 
  **/
+#pragma once
 
 /// @uses: fwprintf, fprintf, FILE (__IO_FILE), std::ostream, std::cout, std::wcout
 #include <iostream>
@@ -80,12 +81,12 @@ namespace __gnu_cxx::v2a {
     
     /// @brief Writes out to a file pointer, ending the line, with formatted args (unicode).
     /// @tparam ...pargs_t Packed args (same as virtual arguments).
-    /// @param __fp 
+    /// @param __fp The file pointer.
     /// @param __format The string to be formatted to.
     /// @param __args Format parameters to format the string and print a line to the file pointer.
     template<typename ... pargs_t>
     static void 
-    vprintln(FILE* __fp, const std::string& __format, pargs_t... __args) noexcept 
+    vprintln_unicode(FILE* __fp, const std::string& __format, pargs_t... __args) noexcept 
     { 
         if (auto __f = __gnu_cxx::v2a::vformat(__format, __args...) + '\n'; __f.length() > 0)
             fprintf(__fp, __f.c_str());
@@ -93,9 +94,17 @@ namespace __gnu_cxx::v2a {
     /// @brief Writes out to stdout with formatted args (unicode).
     template<typename ... pargs_t>
     static void 
-    vprintln(const std::string& __format, pargs_t... __args) noexcept 
+    vprintln_unicode(const std::string& __format, pargs_t... __args) noexcept 
     { 
         vprintln(stdout, __format, __args...);
+    };
+    /// @brief Writes out to std::wostream with formatted args (unicode).
+    template<typename ... pargs_t>
+    static void 
+    vprintln_unicode(std::ostream& __stream, std::wstring& __format, pargs_t... __args) noexcept 
+    { 
+        if (auto __f = __gnu_cxx::v2a::wformat(__format, __args...) + std::endl; __f.length() > 0)
+            __stream << __f;
     };
         
     
@@ -106,7 +115,7 @@ namespace __gnu_cxx::v2a {
     /// @param __args Format parameters to format the wstring and print a line to the file pointer.
     template<typename ... pargs_t>
     static void 
-    wprintln(FILE* __fp, const std::wstring& __format, pargs_t... __args) noexcept 
+    vprintln_nonunicode(FILE* __fp, const std::wstring& __format, pargs_t... __args) noexcept 
     { 
         if (auto __f = __gnu_cxx::v2a::wformat(__format, __args...) + L'\n'; __f.length() > 0)
             fwprintf(__fp, __f.c_str());
@@ -114,7 +123,7 @@ namespace __gnu_cxx::v2a {
     /// @brief Writes out to stdout with formatted args (non-unicode).
     template<typename ... pargs_t>
     static void 
-    wprintln(const std::wstring& __format, pargs_t... __args) noexcept 
+    vprintln_nonunicode(const std::wstring& __format, pargs_t... __args) noexcept 
     { 
         if (auto __f = __gnu_cxx::v2a::wformat(__format, __args...) + L'\n'; __f.length() > 0)
             std::wcout << __f;
@@ -122,7 +131,7 @@ namespace __gnu_cxx::v2a {
     /// @brief Writes out to std::wostream with formatted args (non-unicode).
     template<typename ... pargs_t>
     static void 
-    wprintln(std::wostream& __stream, std::wstring& __format, pargs_t... __args) noexcept 
+    vprintln_nonunicode(std::wostream& __stream, std::wstring& __format, pargs_t... __args) noexcept 
     { 
         if (auto __f = __gnu_cxx::v2a::wformat(__format, __args...) + L'\n'; __f.length() > 0)
             __stream << __f;

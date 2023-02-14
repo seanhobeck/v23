@@ -2,10 +2,11 @@
  * 
  * 
  *      @author  Sean Hobeck
- *       @date 2023-02-13
+ *       @date 2023-02-14
  * 
  * 
  **/
+#pragma once
 
 /// @uses: std::int64_t, std::map, std::vector
 #include <bits/stdc++.h>
