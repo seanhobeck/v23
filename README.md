@@ -5,6 +5,7 @@
 
 ## Why did I make this?
 
- I was working on another project when I came to the realization that g++ 12.0.2 doesn't support some of the things that msvc does when it comes to c++23 && c++2a. I decided to make my own headers to fill in for where g++ couldn't support some c++ library functionality (std::format, std::flat_map, std::flat_multimap, etc).
+ I was working on another project when I came to the realization that g++ 12.0.2 doesn't support some of the things that msvc does when it comes to c++23/2a. 
+I decided to make my own headers to fill in for where g++ couldn't support some c++ library functionality (std::format, std::flat_map, std::flat_multimap, etc).
 
  *Reminder, this shouldn't be used as a dependency it is highly unstable and is barely tested.*
